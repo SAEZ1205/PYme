@@ -1537,9 +1537,17 @@ button {
   white-space:nowrap;
 }
 
+.mobile-ai-voice-error {
+  margin:0;
+  padding:8px 13px 0;
+  color:#b42318;
+  font-size:10px;
+  line-height:1.35;
+}
+
 .mobile-ai-composer {
   display:grid;
-  grid-template-columns:minmax(0,1fr) 46px;
+  grid-template-columns:minmax(0,1fr) 46px 46px;
   gap:8px;
   padding:10px 11px 12px;
   border-top:1px solid rgba(47,96,63,.09);
@@ -1582,6 +1590,26 @@ button {
 
 .mobile-ai-composer > button:disabled {
   opacity:.42;
+}
+
+.mobile-ai-composer > button.mobile-ai-mic {
+  color:#15994c;
+  background:rgba(255,255,255,.9);
+  border:1px solid rgba(45,94,61,.16);
+  box-shadow:0 8px 18px rgba(22,163,74,.12);
+}
+
+.mobile-ai-composer > button.mobile-ai-mic.recording {
+  color:white;
+  border-color:transparent;
+  background:linear-gradient(145deg,#ff6b6b,#d92d20);
+  box-shadow:0 11px 22px rgba(217,45,32,.28);
+  animation:mobile-ai-mic-pulse 1.2s ease-in-out infinite;
+}
+
+@keyframes mobile-ai-mic-pulse {
+  0%, 100% { transform:scale(1); }
+  50% { transform:scale(1.06); }
 }
 
 .mobile-ai-thinking {

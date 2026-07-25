@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
   History,
+  Mic,
+  MicOff,
   Pencil,
   Plus,
   Search,
@@ -67,6 +69,50 @@ interface ChatMessage {
 }
 
 const ACTIVE_CHAT_STORAGE_KEY = "negocio-ia-active-chat";
+
+const SPEECH_RECOGNITION_LANG = "es-PE";
+
+function createSpeechRecognition(): SpeechRecognition | null {
+  const Recognition =
+    window.SpeechRecognition ?? window.webkitSpeechRecognition;
+
+  if (!Recognition) return null;
+
+  const recognition = new Recognition();
+  recognition.lang = SPEECH_RECOGNITION_LANG;
+  recognition.interimResults = true;
+  recognition.continuous = false;
+
+  return recognition;
+}
+
+function transcriptFrom(event: SpeechRecognitionEvent): string {
+  let transcript = "";
+
+  for (let index = 0; index < event.results.length; index += 1) {
+    const result = event.results[index];
+    const alternative = result?.[0];
+    if (alternative) transcript += alternative.transcript;
+  }
+
+  return transcript.trim();
+}
+
+function speechErrorMessage(error: string): string {
+  if (error === "not-allowed" || error === "service-not-allowed") {
+    return "No se pudo usar el micrófono: falta el permiso del navegador.";
+  }
+
+  if (error === "no-speech") {
+    return "No escuché nada. Intenta grabar otra vez.";
+  }
+
+  if (error === "audio-capture") {
+    return "No se detectó un micrófono disponible.";
+  }
+
+  return "No se pudo completar el dictado por voz. Intenta otra vez.";
+}
 
 const examples = [
   "Vendí 3 gaseosas a 4 soles y me pagaron por Yape",
@@ -153,6 +199,7 @@ export function AssistantPage() {
   );
 
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
+  const recognitionRef = useRef<SpeechRecognition | null>(null);
 
   const products = useLiveQuery(
     () => db.products.filter((product) => product.active).toArray(),
@@ -216,6 +263,8 @@ export function AssistantPage() {
   const [showHistory, setShowHistory] = useState(false);
   const [gemmaStatus, setGemmaStatus] =
     useState<GemmaConnectionStatus | null>(null);
+  const [recording, setRecording] = useState(false);
+  const [voiceError, setVoiceError] = useState<string | null>(null);
 
   const filteredSessions = useMemo(() => {
     const query = chatSearch.toLowerCase().trim();
@@ -275,6 +324,14 @@ export function AssistantPage() {
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, busy]);
+
+  useEffect(
+    () => () => {
+      recognitionRef.current?.abort();
+      recognitionRef.current = null;
+    },
+    [],
+  );
 
   useEffect(() => {
     let cancelled = false;
@@ -654,6 +711,49 @@ export function AssistantPage() {
       });
     } finally {
       setBusy(false);
+    }
+  }
+
+  function toggleRecording() {
+    if (recording) {
+      recognitionRef.current?.stop();
+      return;
+    }
+
+    const recognition =
+      recognitionRef.current ?? createSpeechRecognition();
+
+    if (!recognition) {
+      setVoiceError(
+        "Este navegador no permite dictado por voz. Usa Chrome o Edge, o escribe tu mensaje.",
+      );
+      return;
+    }
+
+    recognitionRef.current = recognition;
+
+    recognition.onresult = (event) => {
+      setInput(transcriptFrom(event));
+    };
+
+    recognition.onerror = (event) => {
+      setRecording(false);
+      setVoiceError(speechErrorMessage(event.error));
+    };
+
+    recognition.onend = () => {
+      setRecording(false);
+    };
+
+    try {
+      recognition.start();
+      setVoiceError(null);
+      setRecording(true);
+    } catch {
+      setRecording(false);
+      setVoiceError(
+        "No se pudo iniciar el dictado por voz. Intenta otra vez.",
+      );
     }
   }
 
@@ -1150,6 +1250,12 @@ export function AssistantPage() {
           </div>
         ) : null}
 
+        {voiceError ? (
+          <p className="mobile-ai-voice-error" role="alert">
+            {voiceError}
+          </p>
+        ) : null}
+
         <div className="mobile-ai-composer">
           <textarea
             value={input}
@@ -1197,6 +1303,32 @@ export function AssistantPage() {
             aria-label="Enviar"
           >
             <SendHorizontal size={21} />
+          </button>
+          <button
+            type="button"
+            className={`mobile-ai-mic${recording ? " recording" : ""}`}
+            onClick={toggleRecording}
+            disabled={
+              !chatReady ||
+              busy ||
+              Boolean(
+                pendingAction &&
+                  !pendingAction.missingFields.length,
+              )
+            }
+            aria-pressed={recording}
+            aria-label={
+              recording
+                ? "Detener dictado por voz"
+                : "Dictar por voz"
+            }
+            title={
+              recording
+                ? "Detener dictado por voz"
+                : "Dictar por voz"
+            }
+          >
+            {recording ? <MicOff size={21} /> : <Mic size={21} />}
           </button>
         </div>
       </article>
