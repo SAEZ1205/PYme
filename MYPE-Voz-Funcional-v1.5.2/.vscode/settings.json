@@ -1,0 +1,15 @@
+{
+  "typescript.tsdk": "frontend/node_modules/typescript/lib",
+  "files.exclude": {
+    "**/.runtime": true,
+    "**/node_modules": true,
+    "**/dist": true,
+    "**/*.log": true
+  },
+  "search.exclude": {
+    "**/.runtime": true,
+    "**/node_modules": true,
+    "**/dist": true
+  },
+  "explorer.compactFolders": false
+}

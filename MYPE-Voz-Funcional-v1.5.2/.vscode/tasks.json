@@ -1,0 +1,82 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "MYPE Voz: abrir aplicación completa",
+      "type": "process",
+      "command": "cmd.exe",
+      "args": [
+        "/d",
+        "/c",
+        "${workspaceFolder}\\ABRIR_MYPE_VOZ.bat"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "clear": true,
+        "focus": false
+      }
+    },
+    {
+      "label": "MYPE Voz: instalar dependencias del frontend",
+      "type": "process",
+      "command": "npm.cmd",
+      "args": [
+        "install",
+        "--no-audit",
+        "--no-fund"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}\\frontend"
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "clear": true
+      }
+    },
+    {
+      "label": "MYPE Voz: iniciar en modo desarrollo",
+      "type": "process",
+      "command": "node.exe",
+      "args": [
+        "${workspaceFolder}\\scripts\\dev.mjs"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "clear": true
+      }
+    },
+    {
+      "label": "MYPE Voz: comprobar modelos de Ollama",
+      "type": "process",
+      "command": "ollama.exe",
+      "args": [
+        "list"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "clear": true
+      }
+    }
+  ]
+}

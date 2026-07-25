@@ -1,0 +1,10 @@
+{
+  "name": "mype-voz-backend",
+  "private": true,
+  "version": "2.5.2",
+  "type": "module",
+  "scripts": {
+    "start": "node server/index.mjs",
+    "dev": "node --watch server/index.mjs"
+  }
+}

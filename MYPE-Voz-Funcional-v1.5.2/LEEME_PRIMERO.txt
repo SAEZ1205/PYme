@@ -1,0 +1,83 @@
+MYPE VOZ FUNCIONAL v1.5.2
+================================
+
+ABRIR TODO EN VISUAL STUDIO CODE
+--------------------------------
+
+1. Descomprime este ZIP completamente.
+2. Entra a la carpeta descomprimida.
+3. Haz doble clic en:
+
+MYPE-VOZ.code-workspace
+
+4. Visual Studio Code mostrara todo el proyecto:
+   frontend, backend, scripts y archivos de inicio.
+
+INICIAR LA APLICACION DESDE VS CODE
+-----------------------------------
+
+Metodo sencillo:
+
+1. Abre MYPE-VOZ.code-workspace.
+2. Presiona:
+
+Ctrl + Shift + B
+
+3. Selecciona, si te lo pide:
+
+MYPE Voz: abrir aplicacion completa
+
+Esta tarea ejecuta ABRIR_MYPE_VOZ.bat y realiza las mismas comprobaciones
+de Node, npm, Ollama, Gemma, puertos y dependencias.
+
+Tambien puedes abrir la terminal integrada de VS Code y escribir:
+
+.\ABRIR_MYPE_VOZ.bat
+
+MODO DESARROLLO MANUAL
+----------------------
+
+Solo despues de instalar las dependencias:
+
+Terminal 1:
+cd frontend
+npm install
+
+Terminal 2, desde la carpeta principal:
+node scripts\dev.mjs
+
+El modo desarrollo inicia:
+
+Frontend: http://127.0.0.1:5173
+Backend:  http://127.0.0.1:8787
+Ollama:   http://127.0.0.1:11434
+
+CARPETAS PRINCIPALES
+--------------------
+
+frontend/
+  Interfaz, paginas, diseno, IndexedDB y logica del navegador.
+
+backend/
+  Servidor local, prompts, validacion y comunicacion con Ollama.
+
+scripts/
+  Archivos que inician y coordinan frontend y backend.
+
+IMPORTANTE SOBRE LOS DATOS
+--------------------------
+
+Las ventas, productos, fiados y conversaciones no se guardan dentro de
+los archivos del proyecto. Se guardan en IndexedDB, dentro del navegador,
+con el nombre:
+
+negocio-ia-mvp
+
+No borres los datos del sitio 127.0.0.1:5173 si deseas conservarlos.
+
+MODELO ACTUAL
+-------------
+
+gemma3:4b
+
+.\ABRIR_MYPE_VOZ.bat

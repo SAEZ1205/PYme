@@ -1,0 +1,16 @@
+﻿MYPE Voz v2.5.2 - inicio 2026-07-25 06:38:44
+[06:38:44] Iniciando MYPE Voz v2.5.2...
+[06:38:44] Temporales locales: C:\Users\saez1\OneDrive\MYPE-Voz-Funcional-v1.5.2\MYPE-Voz-Funcional-v1.5.2\.runtime
+[06:38:44] Buscando servidores anteriores de MYPE Voz...
+[06:38:46] Node.js detectado: 24.18.0
+[06:38:46] Espacio libre en la unidad del proyecto: 673,45 GB
+[06:38:46] Espacio libre en la unidad del sistema: 673,45 GB
+[06:38:46] Ollama encontrado: C:\Users\saez1\AppData\Local\Programs\Ollama\ollama.exe
+[06:38:46] Ollama esta activo.
+[06:38:46] gemma3:4b esta instalado.
+[06:38:46] Dependencias completas. npm no se ejecutara al iniciar.
+[06:38:46] Abriendo la ventana de servidores...
+[06:38:46] Esperando a que localhost:5173 responda...
+[06:38:48] Esperando al servidor IA v2.5.2...
+[06:38:48] Servidor IA v2.5.2 verificado.
+[06:38:48] Navegador abierto.
